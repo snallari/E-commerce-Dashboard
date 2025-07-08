@@ -1,9 +1,9 @@
 import { Grid, Typography } from "@mui/material";
+import { useSelector } from "react-redux";
 
-function Dashboard(props) {
-    const {products}=props
-
-    return (products.map((p) =>
+function Dashboard() {
+    const products=useSelector((state)=>state.product)
+    return (products.products.map((p) =>
         <Grid container spacing={2} key={p.id}>
             <Grid size={4}>
                 {p.category}

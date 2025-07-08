@@ -1,24 +1,22 @@
 import Dashboard from "./Dashboard"
 import HeaderDD from "./HeaderDD"
 import MenuDD from "./MenuDD"
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import {fetchProducts} from "../components/ProductSlicer.js"
 
 function MainDashboard() {
-    const [products, setProducts] = useState([])
-    const [loading, setLoading] = useState(true)
+    const dispatch=useDispatch()
+    const products=useSelector((state)=>state.product)
     useEffect(() => {
-        fetch('https://dummyjson.com/products')
-            .then(res => res.json())
-            .then(data => {
-                setProducts(data.products || []);
-                setLoading(false);
-            });
+        dispatch(fetchProducts())
     }, []);
-    return (loading ? <div>Loading</div> :
-        <>
-        <HeaderDD products={products} />
-        <Dashboard products={products}/>
-        </>
+    return (products?.loading ? <div>Loading</div> :
+    <div>{products?.products?.length>0} <Dashboard/></div>
+    //<ul >{products.products.map((p)=>
+    //     <li>{p.title}</li>
+    // )}</ul>
+   
     )
 
 }
