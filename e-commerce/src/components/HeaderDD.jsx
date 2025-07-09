@@ -24,14 +24,17 @@ function HeaderDD() {
     filterValues(products.products)
 
     return (products?.products?.length>0?<Grid container spacing={2} >
-        <Grid size={4}>
+        <Grid size={3}>
             <MenuDD category={unique}/>
         </Grid>
-        <Grid size={4}>
+        <Grid size={3}>
             <Button variant="text" onClick={()=>sortByPrice(products.products,"asc")}>Text</Button>
         </Grid>
-        <Grid size={4}>
+        <Grid size={3}>
             <Button variant="text" onClick={()=>sortByPrice(products.products,"desc")}>Text</Button>
+        </Grid>
+         <Grid size={3}>
+            Add To Cart
         </Grid>
     </Grid>:<div>Loading</div>)
 }
