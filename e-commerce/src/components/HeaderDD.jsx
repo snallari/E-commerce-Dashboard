@@ -1,10 +1,12 @@
 import { Grid, Button} from "@mui/material"
 import MenuDD from "./MenuDD"
-function HeaderDD(props) {
+import { useSelector } from "react-redux"
+function HeaderDD() {
     let unique=new Set()
-    const {products}=props
-    const sortByPrice=(products,sortVal="asc")=>{
-        filterValues(products)
+    const products=useSelector((state)=>state.product)
+    function sortByPrice(products,sortVal="asc"){
+        console.log("products", products)
+        console.log("uniq", unique, Array.isArray(products))
         let finalPP=[]
         if(sortVal=="asc"){
              finalPP= [...products, products.sort((a,b)=>a.price-b.price)]
@@ -19,17 +21,18 @@ function HeaderDD(props) {
             unique.add(products.category)
         });
     }
+    filterValues(products.products)
 
-    return (<Grid container spacing={2}>
+    return (products?.products?.length>0?<Grid container spacing={2} >
         <Grid size={4}>
             <MenuDD category={unique}/>
         </Grid>
         <Grid size={4}>
-            <Button variant="text" onClick={sortByPrice(products, "asc")}>Text</Button>
+            <Button variant="text" onClick={()=>sortByPrice(products.products,"asc")}>Text</Button>
         </Grid>
         <Grid size={4}>
-            <Button variant="text">Text</Button>
+            <Button variant="text" onClick={()=>sortByPrice(products.products,"desc")}>Text</Button>
         </Grid>
-    </Grid>)
+    </Grid>:<div>Loading</div>)
 }
 export default HeaderDD

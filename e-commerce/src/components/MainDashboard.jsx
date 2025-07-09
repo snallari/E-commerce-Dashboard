@@ -12,7 +12,12 @@ function MainDashboard() {
         dispatch(fetchProducts())
     }, []);
     return (products?.loading ? <div>Loading</div> :
-    <div>{products?.products?.length>0} <Dashboard/></div>
+    <div>{products?.products?.length>0}
+    <>
+    <HeaderDD/>
+    <Dashboard/>
+    </>
+    </div>
     //<ul >{products.products.map((p)=>
     //     <li>{p.title}</li>
     // )}</ul>
