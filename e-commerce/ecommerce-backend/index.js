@@ -2,6 +2,7 @@ import express from 'express'
 import products from './project/routes/products.js'
 import submitCart from './project/routes/submitCart.js'
 import pool from './project/routes/db.js';
+import auth from './project/routes/auth.js'
 
 const app = express()
 app.use(express.json());
@@ -10,6 +11,7 @@ const PORT = (typeof process !== 'undefined' && process.env.PORT) ? process.env.
 
 app.use('/api', products)
 app.use('/api', submitCart)
+app.use('/api',auth)
 
 
 
@@ -19,7 +21,7 @@ app.get('/', (req, res) => {
 
 app.get('/api/db-test', async (req, res) => {
   try {
-    const result = await pool.query('SELECT NOW()');
+    const result = await pool.query('DROP TABLE products');
     res.json({ success: true, time: result.rows[0].now });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
