@@ -4,6 +4,7 @@ import submitCart from './project/routes/submitCart.js'
 import pool from './project/routes/db.js';
 import auth from './project/routes/auth.js'
 import jwtsign from './project/middleware/jwtsign.js';
+import rateLimit from 'express-rate-limit';
 const app = express()
 // for parsing form data
 app.use(urlencoded({ extended: true }));
@@ -11,6 +12,7 @@ app.use(urlencoded({ extended: true }));
 app.use(express.json());
 // eslint-disable-next-line no-undef
 const PORT = (typeof process !== 'undefined' && process.env.PORT) ? process.env.PORT : 3000
+app.use(rateLimit)
 app.use('/api',auth)
 app.use('/api', jwtsign, products)
 app.use('/api', jwtsign,submitCart)
