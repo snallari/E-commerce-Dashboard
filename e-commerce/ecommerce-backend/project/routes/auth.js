@@ -1,9 +1,10 @@
 import express from 'express';
 import bcrypt from "bcrypt";
 import pool from './db.js'
+import jwt from 'jsonwebtoken';
 const router = express.Router()
 
-
+const secretkey='a-string-secret-at-least-256-bits-long'
 router.post('/registerUser', async (req, res) => {
     try {
         console.log("rq", req)
@@ -25,7 +26,13 @@ router.post("/loginUser", async (req, res) => {
         if (result.rows.length > 0) {
             const isMatch = await bcrypt.compare(password, result.rows[0].password);
             if (isMatch) {
-                res.status(200).json({ message: "Login Successful", accessToken: "token" });
+                jwt.sign({id:result.rows[0].id},secretkey, {algorithm:'HS256', expiresIn:'1hr'}, (err,token)=>{
+                    if(err) {
+                        return res.status(500).json({ error: 'Internal server error' });
+                    }
+                    console.log("token", token)
+                    res.status(200).json({ message: "Login Successful", accessToken: token });
+                })
             } else {
                 res.status(401).json({ message: "Not Authorized" });
             }

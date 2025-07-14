@@ -2,6 +2,22 @@ import express from 'express';
 const router = express.Router();
 import pool from './db.js'
 
+
+router.post('/getCart',async (req,res)=>{
+       const products = req.body; // Expecting { products: [ { name, price, category }, ... ] }
+    if (!Array.isArray(products)) {
+        return res.status(400).json({ error: 'products must be an array' });
+    }
+    try {
+        const result=await pool.query('select * from cart inner join products on cart.productid=products.id')
+        res.status(201).json(result.rows);
+    } catch (error) {
+        console.error('Error adding products:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+})
+
+
 router.post('/submitCart',async (req,res)=>{
        const products = req.body; // Expecting { products: [ { name, price, category }, ... ] }
     if (!Array.isArray(products)) {
