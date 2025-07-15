@@ -1,42 +1,12 @@
 import express from 'express';
+import { getCart,submitCart} from '../controllers/cartController.js';
 const router = express.Router();
-import pool from './db.js'
-
-
-router.post('/getCart',async (req,res)=>{
-       const products = req.body; // Expecting { products: [ { name, price, category }, ... ] }
-    if (!Array.isArray(products)) {
-        return res.status(400).json({ error: 'products must be an array' });
-    }
-    try {
-        const result=await pool.query('select * from cart inner join products on cart.productid=products.id')
-        res.status(201).json(result.rows);
-    } catch (error) {
-        console.error('Error adding products:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
+router.use(function(err, req, res, next) {
+    // Handle the error, next has to stay
+    res.status(500).send('Internal Server Error -route middle');
+    next();
 })
 
-
-router.post('/submitCart',async (req,res)=>{
-       const products = req.body; // Expecting { products: [ { name, price, category }, ... ] }
-    if (!Array.isArray(products)) {
-        return res.status(400).json({ error: 'products must be an array' });
-    }
-    try {
-        const inserted = [];
-        for (const item of products) {
-            const { product, price} = item;
-            const result = await pool.query(
-                'INSERT INTO cart (product, price) VALUES ($1, $2) RETURNING *',[product, price]);
-            inserted.push(result.rows[0]);
-        }
-        res.status(201).json(inserted);
-    } catch (error) {
-        console.error('Error adding products:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-})
-
-
+router.post('/getCart', getCart)
+router.post('/submitCart', submitCart)
 export default router
