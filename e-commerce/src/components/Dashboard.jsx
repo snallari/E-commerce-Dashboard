@@ -1,7 +1,9 @@
 import { Button, Grid, IconButton} from "@mui/material";
+import {useNavigate} from "react-router-dom"
 import { useSelector} from "react-redux";
 
 function Dashboard() {
+    const navigate = useNavigate()
     const products = useSelector((state) => state.product)
 
     return (products.products.map((p) =>
@@ -16,6 +18,9 @@ function Dashboard() {
                 {p.title}
             </Grid>
             <Grid size={3}>
+                <IconButton onClick={() => navigate(`/cake`)}>
+                    View Details
+                </IconButton>
             </Grid>
         </Grid>))
 
