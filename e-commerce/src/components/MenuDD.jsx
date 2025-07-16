@@ -3,11 +3,9 @@ import { Menu, Button, MenuItem } from "@mui/material";
 
 function MenuDD(props) {
     const { category } = props
-    console.log("category", category)
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
-        console.log("event", event.currentTarget)
         setAnchorEl(event.currentTarget);
     };
     const handleClose = () => {
