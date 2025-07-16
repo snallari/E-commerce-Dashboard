@@ -14,7 +14,10 @@ function MainDashboard() {
     useEffect(() => {
         dispatch(fetchProducts())
     }, [dispatch]);
-    return <WrappedDashboard products={products?.products || []} isLoading={products?.loading} />
+    return <>
+    <HeaderDD />
+    <WrappedDashboard products={products?.products || []} isLoading={products?.loading} />
+    </>
     // <ul>{products?.products?.map((p) =>
     //     <li key={p.id}>{p.title}</li>
     // )}</ul>

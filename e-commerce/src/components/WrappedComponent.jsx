@@ -1,12 +1,13 @@
 import React from "react"
-const withLoading = (WrappedComponent) => {
+const withLoading = (ChildComponent) => {
     return function WithLoadingComponent(props) {
         const { loading, ...restProps } = props;
         if (loading) {
             return <div>Loading</div>;
         }
-        return <WrappedComponent {...restProps} />;
+        return <ChildComponent {...restProps} />;
     }
 }
+
 
 export default withLoading
