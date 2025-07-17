@@ -26,7 +26,7 @@ export default function Login() {
             email: '',
             password: ''
         },
-        validateOnBlur: true,
+        validate,
         onSubmit: values => {
             console.log(JSON.stringify(values))
             if (values.email !== " " && values.password !== "") {
