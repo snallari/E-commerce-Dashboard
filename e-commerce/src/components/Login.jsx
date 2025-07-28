@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 export default function Login() {
     const navigate = useNavigate()
+    const [shouldThrowError, setShouldThrowError] = useState(false)
     localStorage.clear()
+    
+    // This WILL trigger Error Boundary (during rendering)
+    if (shouldThrowError) {
+        throw new Error('Login Error: This will be caught by Error Boundary!')
+    }
     const validate = values => {
         const errors = {};
 
@@ -28,11 +34,13 @@ export default function Login() {
         },
         validate,
         onSubmit: values => {
-            console.log(JSON.stringify(values))
-            if (values.email !== " " && values.password !== "") {
-                localStorage.setItem("user", JSON.stringify(values))
-            }
-            navigate('/main')
+            //simulate error boundary
+            throw new Error('Error')
+            // console.log(JSON.stringify(values))
+            // if (values.email !== " " && values.password !== "") {
+            //     localStorage.setItem("user", JSON.stringify(values))
+            // }
+            // navigate('/main')
         },
     });
 

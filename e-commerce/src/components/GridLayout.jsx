@@ -1,17 +1,26 @@
 import { Grid, Button} from "@mui/material"
 import MenuDD from "./MenuDD"
+import { useReducer } from "react"
 function GridLayout(props){
     const {products, unique}=props
-    function sortByPrice(products,sortVal="asc"){
-        console.log("products", products)
-        console.log("uniq", unique, Array.isArray(products))
-        let finalPP=[]
-        if(sortVal=="asc"){
-             finalPP= [...products, products.sort((a,b)=>a.price-b.price)]
-        }else{
-            finalPP=  [...products,products.sort((a,b)=>b.price-a.price)]
+    const [sortVal, setSortVal] = useReducer((sortVal)=>{
+        switch(sortVal){
+            case "asc":
+                console.log("products",products)
+                return [...products.sort((a,b)=>a.price-b.price)]
+            case "desc":
+                console.log("products",products)
+                return [...products.sort((a,b)=>b.price-a.price)]
+            case "reset":
+                return[...products]
         }
-         return finalPP
+    })
+    const sortByPrice=(order)=>{
+        let arr=[]
+        console.log("sort order",order)
+        arr=setSortVal(order)
+        console.log("sort products",arr)
+        return arr
     }
     return(
         <Grid container spacing={2} >
@@ -19,10 +28,10 @@ function GridLayout(props){
             <MenuDD category={unique}/>
         </Grid>
         <Grid size={3}>
-            <Button variant="text" onClick={()=>sortByPrice(products,"asc")}>Text</Button>
+            <Button variant="text" onClick={()=>sortByPrice("asc")}>Text</Button>
         </Grid>
         <Grid size={3}>
-            <Button variant="text" onClick={()=>sortByPrice(products,"desc")}>Text</Button>
+            <Button variant="text" onClick={()=>sortByPrice("desc")}>Text</Button>
         </Grid>
          <Grid size={3}>
             Add To Cart
