@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 export default function Login() {
     const navigate = useNavigate()
+    const inputRef = useRef()
     const [shouldThrowError, setShouldThrowError] = useState(false)
     localStorage.clear()
-    
-    // This WILL trigger Error Boundary (during rendering)
-    if (shouldThrowError) {
-        throw new Error('Login Error: This will be caught by Error Boundary!')
+
+    const getFocus=()=>{
+        console.log("focus",inputRef)
     }
+
+    // This WILL trigger Error Boundary (during rendering)
+     //throw new Error('Login Error: This will be caught by Error Boundary!')
+
     const validate = values => {
         const errors = {};
 
@@ -34,13 +38,17 @@ export default function Login() {
         },
         validate,
         onSubmit: values => {
+            //getFocus()
             //simulate error boundary
-            throw new Error('Error')
+            //setShouldThrowError(true)
+           // if (shouldThrowError) {
+               
+           // }
             // console.log(JSON.stringify(values))
-            // if (values.email !== " " && values.password !== "") {
-            //     localStorage.setItem("user", JSON.stringify(values))
-            // }
-            // navigate('/main')
+            if (values.email !== " " && values.password !== "") {
+                localStorage.setItem("user", JSON.stringify(values))
+            }
+            navigate('/main')
         },
     });
 
@@ -49,9 +57,11 @@ export default function Login() {
         <form onSubmit={formik.handleSubmit}>
             <label htmlFor="email">Email Address</label>
             <input
+
                 id="email"
                 name="email"
                 type="email"
+                ref={inputRef}
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
                 value={formik.values.email}

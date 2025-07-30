@@ -9,7 +9,7 @@ const intialState={
 
 export const fetchProducts=createAsyncThunk('product/fetchProducts', async()=>{
     const res=await axios.get('https://dummyjson.com/products')
-    return res.data.products
+        return res.data.products
 })
 
 

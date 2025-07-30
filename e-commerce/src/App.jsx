@@ -8,6 +8,15 @@ import Users  from './features/users/Users'
 import Authenticate from './components/Authenticate'
 import Login from './components/Login'
 import ErrorBoundary from './components/ErrorHandling/ErrorBoundary'
+import { Suspense } from 'react'
+import React from 'react'
+import Details from './components/Details'
+import DetailsProvider from './components/DetailsProvider'
+import Loading from './components/Loading'
+
+// Create lazy-loaded component outside of render
+const LazyLogin = React.lazy(() => import('./components/Login'))
+const LazyMainDashboard=React.lazy(()=>import('./components/MainDashboard'))
 
 function App() {
 
@@ -16,15 +25,17 @@ function App() {
     <Routes>
       <Route path="/login" element={
         <ErrorBoundary>
-          <Login />
+          <Suspense fallback={<Loading />}>
+            <LazyLogin />
+          </Suspense>
         </ErrorBoundary>
       } />
       <Route path="/main" element={
-      <ErrorBoundary>
-        <Authenticate>
-          <MainDashboard />
-        </Authenticate>
-      </ErrorBoundary>
+        <ErrorBoundary>
+          <Suspense fallback={<Loading />}>
+            <LazyMainDashboard />
+          </Suspense>
+        </ErrorBoundary>
       } />
       <Route path="/icecream" element={
         <Authenticate>
@@ -39,6 +50,14 @@ function App() {
       <Route path="/users" element={
         <Authenticate>
           <Users />
+        </Authenticate>
+      } />
+
+      <Route path="/details" element={
+        <Authenticate>
+        <DetailsProvider>
+          <Details />
+        </DetailsProvider>
         </Authenticate>
       } />
 
